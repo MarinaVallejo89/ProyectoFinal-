@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.contNoResults {
+  margin: 25px;
+  margin-top: 40px;
+  padding: 20px;
+  background-color: rgb(150, 175, 175);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 7px 7px 15px #000000;
+}

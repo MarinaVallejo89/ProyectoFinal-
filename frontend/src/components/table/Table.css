@@ -1,0 +1,35 @@
+.contTable {
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  background-color: rgb(160, 199, 149);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 7px 7px 15px #000000;
+}
+
+.table {
+  padding: 20px;
+}
+
+.tableTitle {
+  margin-top: 15px;
+  font-size: 30px;
+}
+
+tr,
+td,
+th {
+  padding: 5px;
+}
+
+.first-row {
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.226);
+}
+
+.row-data:hover {
+  background-color: #ccc;
+  cursor: pointer;
+}
