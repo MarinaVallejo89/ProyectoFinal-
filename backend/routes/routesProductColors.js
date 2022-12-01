@@ -5,7 +5,7 @@ router.get("/", async (req, res) => {
   
   try {
 
-    let allProd = await ServiceProduct.getProductsBrand()
+    let allProd = await ServiceProduct.getAllProductsColor()
     res.status(200).send(allProd)
 
   }catch(e){

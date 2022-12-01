@@ -1,17 +1,15 @@
 const { model, Schema } = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 
-const productSchema = new Schema(
-  {
+const productSchema = new Schema({
     name: String,
-    manufacturer: { 
+    manufacter: { 
         ref: { type: Schema.Types.ObjectId, ref: 'Manufacter'},
         name: String
     },
     color: String,
     price: Number
-}
-);
+});
 
 productSchema.plugin(mongoosePaginate);
 

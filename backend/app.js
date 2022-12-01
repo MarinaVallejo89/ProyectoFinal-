@@ -7,6 +7,7 @@ const express = require("express");
 const app = express();
 const routerManufacters = require("./routes/routesManufacters");
 const routerProducts = require("./routes/routesProducts");
+const routerProductColors = require("./routes/routesProductColors");
 const hostname = process.env.HOST;
 const port = process.env.PORT;
 const cors = require("cors");
@@ -14,6 +15,7 @@ const cors = require("cors");
 app.use(cors());
 app.use("/manufacters", routerManufacters);
 app.use("/products", routerProducts);
+app.use("/colors", routerProductColors);
 
 async function inicio() {
   await mongoose.connect(url);
