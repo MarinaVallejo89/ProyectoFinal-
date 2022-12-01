@@ -20,4 +20,17 @@ const getManufactersByName = async (req, res) => {
   }
 };
 
-module.exports = { getAllManufacters, getManufactersByName };
+const getProductsBrand = async (page =1) => {
+  let ret = await Manufacters.paginate(
+  );
+  let brands = []
+  ret.docs.map((row)=>{
+    brands.push(row.name)
+  })
+  let result = brands.filter((item,index)=>{
+    return brands.indexOf(item) === index;
+  })
+  return result
+};
+
+module.exports = { getAllManufacters, getManufactersByName, getProductsBrand };

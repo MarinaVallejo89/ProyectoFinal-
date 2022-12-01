@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const ServiceProduct = require('../services/servicesProducts.js');
+const ServicesManufacters = require('../services/servicesManufacters.js');
 
 router.get("/", async (req, res) => {
   
   try {
 
-    let allProd = await ServiceProduct.getProductsBrand()
+    let allProd = await ServicesManufacters.getProductsBrand()
     res.status(200).send(allProd)
 
   }catch(e){

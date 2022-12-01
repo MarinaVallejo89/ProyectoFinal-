@@ -96,19 +96,6 @@ const getAllProductsColor = async (page) => {
   return result
 };
 
-const getProductsBrand = async (page =1) => {
-  let ret = await Manufacter.paginate(
-  );
-  let brands = []
-  ret.docs.map((row)=>{
-    brands.push(row.name)
-  })
-  let result = brands.filter((item,index)=>{
-    return brands.indexOf(item) === index;
-  })
-  return result
-};
-
 const getProductsPrice = async (price, page) => {
   return await Products.paginate(
     { price: { $lt: price } },
@@ -124,6 +111,5 @@ module.exports = {
   getProductsBrandPrice,
   getProductsColorPrice,
   getAllProductsColor,
-  getProductsBrand,
   getProductsPrice,
 };
