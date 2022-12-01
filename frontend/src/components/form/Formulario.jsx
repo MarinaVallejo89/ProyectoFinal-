@@ -1,13 +1,53 @@
-import { React } from "react";
+import { React, useEffect, useState } from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import "./Formulario.css";
 
-const Formulario = ({ title, setFilters }) => {
+const getManufacters =  "http://localhost:5000/manufacters";
+const getProducts = "http://localhost:5000/products";
+const getColors = "http://localhost:5000/colors";
+
+const Formulario = ({
+  title,
+  setFilters
+}) => {
+
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    setFilters(data);
+  // Valores válidos para los selectores
+  const [brands, setBrands] = useState();
+  const [colors, setColors] = useState();
+
+  // Valores seleccionados
+  const [brand, setBrand] = useState();
+  const [color, setColor] = useState();
+  const [price, setPrice] = useState();
+
+  const onSubmit = (e) => {
+    setFilters(e);
   };
+
+  useEffect(()=>{
+    onSubmit({brand: brand, color: color, price: price});
+  },[brand, color, price])
+
+  useEffect(() => {
+
+    // Obtener todos los fabricantes existentes
+    axios.get(getManufacters).then((res) => {
+      // Recorrer estas marcas y juntarlas en un array
+      let brands = []
+      res.data.map((row)=> brands.push(row))
+      // Lo seteo en el estado correspondiente para distintas marcas
+      setBrands(brands)
+    });
+
+    // Obtener todos los productos que existen para obtener los valores deseados
+    axios.get(getColors).then((res) => {
+      setColors(res.data)
+    });
+
+  }, []);
 
   return (
     <>
@@ -15,36 +55,36 @@ const Formulario = ({ title, setFilters }) => {
         <div className="contTitulo">
           <h1>{title}</h1>
         </div>
-        <label>Selecciona tu vehículo</label>
+        <label>Selecciona la marca de tu vehículo</label>
+        {/*Este es el selector de marcas*/}
         <select
           name="select"
-          id="selectBrand"
+          id="brand"
           className="register"
-          {...register("name")}
+          onChange={(e)=>setBrand(e.target.value)}//Al cambiar de color en el selector, modificamos el estado dela marca
+          {...register("brand")}
         >
-          <option value="">Todos los coches</option>
-          <option value="audi">Audi</option>
-          <option value="bmw">BMW</option>
-          <option value="porsche">Porsche</option>
-          <option value="seat">Seat</option>
-          <option value="volkswagen">Volkswagen</option>
+          <option disabled>-- Seleccionar --</option>
+          {brands && brands.map(row=>
+            <option  key={row} value={row}>{row}</option>
+          )}
         </select>
 
         <br />
 
-        <label>Relevancia</label>
-        <select
+        <label>Colores</label>
+        {/*Este es el selector de colores*/}
+        <select          
           name="select"
-          id="selectColor"
+          id="color"
           className="register"
-          {...register("relevance")}
+          onChange={(e)=>setColor(e.target.value)}//Al cambiar de color en el selector, modificamos el estado del color
+          {...register("color")}
         >
-          <option value="">Cualquier relevancia</option>
-          <option value="1">1*</option>
-          <option value="2">2*</option>
-          <option value="3">3*</option>
-          <option value="4">4*</option>
-          <option value="5">5*</option>
+          <option disabled value=''>-- Seleccionar --</option>
+          {colors && colors.map(row=>
+            <option key={row} value={row}>{row}</option>
+          )}
         </select>
 
         <br />
@@ -53,8 +93,9 @@ const Formulario = ({ title, setFilters }) => {
         <input
           type="number"
           name="price"
-          id="inputPrice"
+          id="price"
           className="register"
+          onChange={(e)=>setPrice(e.target.value)}
           {...register("price")}
         />
 

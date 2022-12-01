@@ -1,6 +1,16 @@
 import React from "react";
 import "./Table.css";
 
+const translate = (text) => {
+  switch(text){
+    case 'name': return 'Nombre';
+    case 'color': return 'Color';
+    case 'price': return 'Precio';
+    case '__v': return 'Extra';
+    default: return text;
+  }
+}
+
 const Table = ({ data, showManufacterData }) => {
   return (
     <div className="contTable">
@@ -12,7 +22,7 @@ const Table = ({ data, showManufacterData }) => {
               return (
                 keyName !== "_id" && (
                   <th key={"th_" + index} className="first-row">
-                    {keyName}
+                    {translate(keyName)}
                   </th>
                 )
               );

@@ -7,8 +7,9 @@ import React, { useState, useEffect } from "react";
 import ManufacterData from "../ManufacterData/ManufacterData";
 
 const Container = ({ title }) => {
+  
   const [currentProducts, setProducts] = useState([]);
-  const [currentFilters, setFilters] = useState([]);
+  const [currentFilters, setFilters] = useState({ color: '', price: '', brand: ''});
 
   const [currentPage, setCurrentPage] = useState(1);
   const [finalPage, setFinalPage] = useState(1);
@@ -17,35 +18,37 @@ const Container = ({ title }) => {
 
   useEffect(() => {
     axios.get(getProductsURL()).then((res) => {
-      const { page, totalPages, products } = res.data;
+      const { page, totalPages, docs } = res.data;
       setCurrentPage(page);
       setFinalPage(totalPages);
-      setProducts(products);
+      setProducts(docs);
     });
   }, [currentFilters, currentPage]);
 
   const getProductsURL = () => {
-    let URL_PRODUCTS = "http://127.0.0.1:5000/products/search";
-    if (currentFilters) {
-      const { name, relevance, price } = currentFilters;
-      console.log(name, relevance, price);
-      URL_PRODUCTS += `?name=${name || ""}&relevancia=${relevance || ""}&price=${
-        price || ""
-      }`;
-    } else {
-      URL_PRODUCTS += "?name=&relevancia=&price=";
+    let url = "http://localhost:5000/products";
+    let URL_PRODUCTS = []
+    if(currentFilters.brand !== ''
+    || currentFilters.color !== ''
+    || currentFilters.price !== '' ){
+      url = url + '?';
     }
-    URL_PRODUCTS += `&page=${currentPage ? currentPage : 1}`;
-    console.log(URL_PRODUCTS);
-    return URL_PRODUCTS;
+    if (currentFilters?.brand !== '') {
+      URL_PRODUCTS.push(`brand=${currentFilters.brand || ""}`);
+    }
+    if (currentFilters?.color !== '') {
+      URL_PRODUCTS.push(`color=${currentFilters.color || ""}`);
+    }
+    if (currentFilters?.price !== '') {
+      URL_PRODUCTS.push(`price=${currentFilters.price || 0}`);
+    }
+    return url+URL_PRODUCTS.join('&');
   };
 
   const showManufacterData = (id) => {
     axios.get(getManufactersURL(id)).then((res) => {
       const { manufacter } = res.data.products;
-      console.log(manufacter.name, manufacter.cif, manufacter.address);
       setManufacterAndProduct(manufacter);
-      console.log(manufacterAndProduct);
     });
   };
 
@@ -83,11 +86,14 @@ const Container = ({ title }) => {
       )}
       {!currentProducts?.length && (
         <div className="contNoResults">
-          <p>No existen resultados</p>
+          {currentProducts && currentProducts.map(row=>
+            <>No existen resultados</>  
+          )}
         </div>
       )}
     </div>
   );
+
 };
 
 export default Container;
